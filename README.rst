@@ -10,7 +10,12 @@ DM QA Status & Plans
 DMTN-074
 --------
 
-An abstract.
+This document will:
+
+- Describe the current status of “QA” tools, in the broadest sense,
+  currently provided by Data Management;
+- Lay out a set of common use cases and requirements for future QA
+  tool and service development across the subsystem.
 
 **Links**
 
