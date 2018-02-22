@@ -1,4 +1,4 @@
-\documentclass[DM,authoryear,toc]{lsstdoc}
+\documentclass[DM,authoryear,toc,lsstdraft]{lsstdoc}
 \input meta.tex
 
 \title{DM QA Status \& Plans}
@@ -37,7 +37,200 @@ This document will:
 
 \maketitle
 
-% ADD CONTENT HERE
+\section{Introduction}
+\label{sec:intro}
+
+Across the Data Management subsystem, we (ab)use the term ``QA'' to refer to
+various aspects of ensuring that things are ``working properly''. This spans a
+wide gamut of applications, including, for example:
+
+\begin{itemize}
+
+\item{Does our code correctly compile and pass its unit tests?}
+\item{Can we demonstrate that the DM system meets ``key performance
+metrics'' (\citeds{LDM-502}) and satisfies other aspects of our requirements
+documentation (\citeds{LSE-29, LSE-30, LSE-61})?}
+\item{Do we properly understand the operation of our scientific algorithms,
+both individually and operating in concert? Can we identify when the results
+they produce are scientifically lacking?}
+\item{Do we provide tools to developers, scientists and other members of the
+DM team to help them understand and debug the code and systems they are
+constructing or using as part of their work?}
+\item{How do we track computational performance across the system, from
+execution times of scientific algorithms to the scaling properties of database
+queries?}
+\item{Can we monitor systems within the LSST Data Facility to ensure that they
+are operational and performing correctly?}
+\item{Can we identify problems which stem from bad data, as distinct from bad
+software or services?}
+
+\end{itemize}
+
+To date, the DM team has build a number of tools which address parts of these
+problems. However, a coherent, unified vision for how they fit together
+remains lacking. This document will\footnote{Ultimately; the current draft
+does yet address all aspects of this scope!} catalogue the tools that are currently
+available, will identify use-cases and the requirements arising from them,
+will determine to what extent the existing tools satisfy those requirements,
+and will suggest directions for future development.
+
+\section{Current Tooling}
+\label{sec:current}
+
+We begin by cataloguing the tooling which has been developed to date, or which
+will be deployed in the short term\footnote{That is, which we can count on
+becoming available shortly, regardless of any future course corrections which
+result from this document or other discussion.}. These tools are listed by the
+team within DM which originated or leads the development of them.
+
+\subsection{Alert Production (AP)}
+\label{sec:current:ap}
+
+Development within 
+
+\subsection{Data Release Production (DRP)}
+\label{sec:current:drp}
+
+\subsection{Science User Interface \& Tools (SUIT)}
+\label{sec:current:suit}
+
+\subsection{Science Data Archive \& Application Services (DAX)}
+\label{sec:current:dax}
+
+\subsection{Data Facility (LDF)}
+\label{sec:current:ldf}
+
+\subsection{Science Quality and Reliability Engineering (SQuaRE)}
+\label{sec:current:square}
+
+\subsubsection{Continuous Integration services (Jenkins)}
+\label{sec:current:square:ci}
+
+SQuaRE provides and maintains the CI system which regularly builds and
+tests much of the DM codebase\footnote{Principally, CI covers products of
+the Science Pipelines and Database teams; I believe that little-to-none of the
+UI code developed by SUIT, of the service management code developed by LDF, or
+of the code used to provide services by SQuaRE, is regularly tested in this CI
+system.}.
+
+The CI system is widely used for a number of related purposes, including:
+
+\begin{itemize}
+
+  \item{Testing of code by developers before it is merged;}
+  \item{Executing metric collection systems (e.g. validate\_drp,
+  \S\ref{sec:current:square:validate});}
+  \item{Building and preparing code for public release.}
+
+\end{itemize}
+
+\subsubsection{Unit test framework}
+
+All code written for DM is expected to be accompanied by appropriate unit
+tests\footnote{Refer to the
+\href{https://developer.lsst.io/coding/unit_test_policy.html}{Unit Test
+Policy} in the \href{https://developer.lsst.io}{Developer Guide}, but note
+that our implementation does not follow the terminology it uses}.
+
+The ideal unit test demonstrates that an individual ``unit'' of software (a
+class, a function, etc) is operating correctly. In practice, many tests used
+by DM go well beyond this, for obvious reasons: it's hard to demonstrate that
+the \code{ProcessCcdTask} class is operating correctly without relying on
+classes for loading data, performing instrument signature removal, source
+detection and measurement, calibration, and so on. As a natural result of
+this, DM's unit tests are often (ab)used to provide mini-integration tests.
+This can cause fragility in the test suite, but also provides convenient
+test capabilities which are not easily available elsewhere.
+
+Although the creation of unit tests is not a responsibility of SQuaRE, the
+technology used to implement them, and their regular execution as part of the
+CI system, is (although we note that much of the current test harness has been
+developed in close cooperation with the Architecture team).
+
+\subsubsection{lsst.verify}
+\label{sec:current:square:verify}
+
+% text adapted from
+% https://pipelines.lsst.io/v/DM-11597/modules/lsst.verify/index.html
+
+\href{https://github.com/lsst/verify}{lsst.verify} is a framework for packages
+that measure software and data quality ``metrics''. A metric can be any
+measurable scalar quantity; some examples are in the LSST Science Requirements
+Document (\citeds{LPM-17}), though packages can also define ad hoc metrics.
+Measurements made through lsst.verify can be uploaded to LSST's SQuaSH
+monitoring dashboard (\S\ref{sec:current:square:squash}).
+
+\subsubsection{SQuaSH}
+\label{sec:current:square:squash}
+
+\href{https://squash.lsst.codes}{SQuaSH} is a metric aggregation and display
+service. It provides time-series visualization of selected metrics derived
+from \citeds{LDM-502}. Metics may be submitted to SQuaSH using lsst.verify
+(\S\ref{sec:current:square:verify}).
+
+\begin{draftnote}
+I --- JDS --- am actually unsure of the bigger picture of SQuaSH beyond that.
+I know there have been plans for end users to extend it to plot arbitrary
+metrics, but I don't know if they've been implemented, and I know work has
+been done on more advanced visualizations, but I don't know how much of that
+has rolled out or where it's heading next. Simon, perhaps you can expand?
+\end{draftnote}
+
+SQuaSH is described in \citeds{SQR-009}.
+
+\subsubsection{Validation packages}
+\label{sec:current:square:validate}
+
+\begin{draftnote}
+I --- JDS --- am unsure as to whether these packages are actually a product of
+SQuaRE or of DM Science or of System Level Testing \& Science Validation
+(02C.09). Simon, do you know?
+\end{draftnote}
+
+The validate\_drp package will automatically run single-frame processing on a
+dataset, calculate a subset of metrics derived from the Science Requirements
+Document (\citeds{LPM-17}), upload the results to SQuaSH
+(\S\ref{sec:current:square:squash}, and evaluate expected analytic models for
+photometric and astrometric performance following \cite{2008arXiv0805.2366I}.
+
+Currently, validate\_drp supports the following metrics\footnote{From
+\code{etc/metrics.yaml} of validate\_drp \code{w.2018.07}}:
+
+\begin{itemize}
+\item{Relative astrometry
+  \begin{itemize}
+    \item{AM1, AF1, AD1}
+    \item{AM2, AF2, AD2}
+    \item{AM3, AF3, AD3}
+  \end{itemize}
+}
+\item{Photometric repeatability
+  \begin{itemize}
+    \item{PA1, PA2, PF1}
+  \end{itemize}
+}
+\item{Residual PSF ellipticity correlations
+  \begin{itemize}
+    \item{TE1, TE2}
+  \end{itemize}
+}
+\end{itemize}
+
+In addition, three curated datasets for use with validate\_drp are provided.
+These are based on CFHT (validation\_data\_cfht), DECam
+(validation\_data\_decam) and HSC (validation\_data\_hsc). These datasets are
+reguarly reprocessed by the CI system (\S\ref{sec:current:square:ci}) and the
+results uploaded to SQuaSH.
+
+Note that the validation\_data packages contain both ``raw'' data and
+processed data which has been ingested to a Butler repository. There is no
+regular routine for updating that processed data in light of changes to the
+software; developers have occasionally found it unclear or confusing whether
+this data is actually supposed to be usable or useful.
+
+\section{Requirements}
+\label{sec:req}
+
 
 \bibliography{lsst,lsst-dm,refs_ads,refs,books}
 
