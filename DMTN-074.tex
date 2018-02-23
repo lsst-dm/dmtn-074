@@ -86,6 +86,8 @@ team within DM which originated or leads the development of them.
 \subsection{Alert Production (AP)}
 \label{sec:current:ap}
 
+\subsubsection{ap\_pipe and ap\_verify}
+
 Development within the Alert Production group has focused on the construction
 of an instrumented ``end-to-end'' alert production pipeline.
 
@@ -127,6 +129,24 @@ formally adopted by the project.
 
 \subsubsection{ci\_hsc}
 \label{sec:current:drp:cihsc}
+
+The ci\_hsc package provides a curated set of HSC data and a
+SCons\footnote{\url{http://www.scons.org/}; note that the choice of SCons here
+is ingenious --- it provides many desirable features in a workflow system ---
+but also completely non-standard across the rest of the codebase, and can make
+this package hard for developers to engage with.}-based system for processing
+it through a DRP-like workflow. The resulting data products are automatically
+sanity-checked: that is, we establish that the expected outputs have been
+produced and contain a plausible number of objects, reasonable selection of
+objects used for PSF determination, and so on, but we do not do detailed
+analysis of source measurements or astrophyisical plausibility. This means
+that ci\_hsc provides an excellent way to catch regressions in pipeline
+machinery and integration, but is not sensitive to more subtle algorithmic
+issues.
+
+ci\_hsc may be run standalone by individual developers --- it takes around
+three hours --- and is periodically run by the CI system
+(\S\ref{sec:current:square:ci}).
 
 \subsubsection{Automated static plots with pipe\_analysis}
 \label{sec:current:drp:pipeanalysis}
