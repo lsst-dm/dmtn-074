@@ -125,14 +125,49 @@ formally adopted by the project.
 \subsection{Data Release Production (DRP)}
 \label{sec:current:drp}
 
+\subsubsection{ci\_hsc}
+\label{sec:current:drp:cihsc}
+
+\subsubsection{Automated static plots with pipe\_analysis}
+\label{sec:current:drp:pipeanalysis}
+
+\subsubsection{Dynamic ``drill-down'' plots}
+\label{sec:current:drp:drilldown}
+
+\subsubsection{Large scale scientific analysis of HSC data}
+\label{sec:current:drp:hsc}
+
 \subsection{Science User Interface \& Tools (SUIT)}
 \label{sec:current:suit}
 
 \subsection{Science Data Archive \& Application Services (DAX)}
 \label{sec:current:dax}
 
+\subsubsection{\code{lsstDebug}}
+\label{sec:current:dax:debugopt}
+
+% Text adapted from input from Yusra & the DRP group.
+The author of an algorithmic task knows which intermediate data products and
+diagnostic plots are useful for answering questions about its behavior. The
+\code{lsstDebug} framework allows developers to insert code into their
+\code{Task}s that displays images (using standard DM primitives) and makes
+plots that is only run when the \code{CmdLineTask} is invoked with the
+\code{--debug} parameter.
+
+Historically, the \code{lsstDebug} system has been poorly documented and the
+subject of some confusion. There are no published guidelines about appropriate
+ways to use it or expectations of how developers should instrument their
+\code{Task}s.
+
+Note that the \code{lsstDebug} system did not originate with the DAX team
+(and, indeed, it's quite likely that no member of DAX has ever used it), but
+it falls within their remit as part of the ``task framework''.
+
 \subsection{Data Facility (LDF)}
 \label{sec:current:ldf}
+
+\subsubsection{Regular manual reprocessing of HSC ``RC'' data}
+\label{sec:current:ldf:hsc}
 
 \subsection{Science Quality and Reliability Engineering (SQuaRE)}
 \label{sec:current:square}
