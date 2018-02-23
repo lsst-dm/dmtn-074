@@ -237,6 +237,26 @@ technology used to implement them, and their regular execution as part of the
 CI system, is (although we note that much of the current test harness has been
 developed in close cooperation with the Architecture team).
 
+\subsubsection{Stack Demo}
+\label{sec:current:square:demo}
+
+The Stack Demo, \code{lsst/lsst\_dm\_stack\_demo}, contains a curated
+selection of SDSS data, a script which executed single frame measurement on
+that data, and a set of precomputed expected outputs. The results of
+measurement are compared with the expected values, and an error is thrown if
+any values (including number of detected sources, their positions, and
+assorted measurement algorithm results) are different.
+
+Note that the expected values are the results of some previous processing run.
+There is no ground truth for this data, and these results have not been
+rigorously analysed to demonstrate that they are correct. In short, this
+procedure can verify that changes being made do not substantially change the
+results of processing, but cannot verify that the results are intrinsically
+correct.
+
+The Stack Demo is available for end users to run standalone, but it is also
+automatically run as part of most CI (\S\ref{sec:current:square:ci}) jobs.
+
 \subsubsection{lsst.verify}
 \label{sec:current:square:verify}
 
