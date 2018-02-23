@@ -86,7 +86,41 @@ team within DM which originated or leads the development of them.
 \subsection{Alert Production (AP)}
 \label{sec:current:ap}
 
-Development within 
+Development within the Alert Production group has focused on the construction
+of an instrumented ``end-to-end'' alert production pipeline.
+
+The pipeline code itself lives in the \code{lsst-dm/ap\_pipe} package in
+GitHub. This provides prototype implementations of major alert production
+pipeline components (single frame processing, image differencing, source
+association), and a control script to string them together\footnote{At time of
+writing, this system is being migrated to use the DM-standard
+\code{CmdLineTask} framework.}
+
+The \code{lsst-dm/ap\_verify} package is a companion to ap\_pipe. ap\_verify
+effectively wraps pipeline functionality in a form that is intended to be
+appropriate for regular testing in CI (\S\ref{sec:current:square:ci}). As
+such, it provides:
+
+\begin{itemize}
+
+  \item{A standardized way of defining ``dataset'' packages, each of which
+  provide a curated test dataset;}
+  \item{The facility to ingest data into Butler repositories suitable for
+  processing with LSST stack tools;}
+  \item{Facilities for instrumenting and calculating metrics based upon
+  running pipeline code;}
+  \item{Submission of calculated metrics to SQuaSH using the lsst.verify
+  system (\S\S\ref{sec:current:square:squash} \&
+  \ref{sec:current:square:verify}).}
+
+\end{itemize}
+
+Based largely upon the experience gained in building ap\_verify, the AP team
+has put considerable thought into the appropriate mechanisms for extracting
+``metrics'' from running pipeline \code{Task}s. This has resulted in
+\citeds{DMTN-057}, which describes a number of possibilites for how this might
+be standardized. At time of writing, none of these proposals have been
+formally adopted by the project.
 
 \subsection{Data Release Production (DRP)}
 \label{sec:current:drp}
