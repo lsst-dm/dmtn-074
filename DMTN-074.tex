@@ -127,6 +127,9 @@ formally adopted by the project.
 \subsection{Data Release Production (DRP)}
 \label{sec:current:drp}
 
+\subsubsection{afwDisplay}
+\label{sec:current:drp:afwDisplay}
+
 \subsubsection{ci\_hsc}
 \label{sec:current:drp:cihsc}
 
@@ -217,6 +220,32 @@ use the results to trigger development and bug-fixes using public data.
 
 \subsection{Science User Interface \& Tools (SUIT)}
 \label{sec:current:suit}
+
+\subsubsection{Firefly}
+\label{sec:current:suit:firefly}
+
+\href{https://github.com/Caltech-IPAC/firefly}{Firefly} is the IPAC's ``advanced
+astronomy web UI framework''. It provides data browsing, image viewing, and
+plotting functionality, and will be the focus of the ``portal aspect'' of the
+Science Platform.
+
+Firefly is a client-server application; a Java-based server component is
+colocated with the data, and is accessed through a Javascript based UI in the
+user's browser. At various times, installations of Firefly have been made
+available to DM developers on project-provided compute hardware\footnote{i.e.
+\texttt{lsst-dev01.ncsa.illionois.edu}}, but these are not regularly
+maintained or accessed by pipelines developers.
+
+Firefly interfaces to the standard image display system used by the LSST
+pipelines (\S\ref{sec:current:drp:afwDisplay}) are available.
+
+The functionality available from Firefly may be useful to other DM teams, in
+particular providing visualization and plotting services in support of
+algorithm development and investigating the properties of data releases.
+However, the SUIT team is not scoped to deliver capabilities to the rest of
+DM: they are focused on developing Firefly to meet the requirements of the
+Science Platform. Other parts of DM may, of course, benefit from the tools
+developed for this purpose.
 
 \subsection{Science Data Archive \& Application Services (DAX)}
 \label{sec:current:dax}
