@@ -166,8 +166,29 @@ it falls within their remit as part of the ``task framework''.
 \subsection{Data Facility (LDF)}
 \label{sec:current:ldf}
 
-\subsubsection{Regular manual reprocessing of HSC ``RC'' data}
+\subsubsection{Regular manual reprocessing of HSC data}
 \label{sec:current:ldf:hsc}
+
+% Text adapted from input from Yusra & the DRP group.
+Every two weeks, members\footnote{Principally Hsin-Fang Chiang} of the LDF
+team reprocess some three tracts of HSC data, comprising the ``RC2''
+dataset\footnote{The RC2 dataset is fully defined in \jira{DM-11345}.},
+through the current weekly release of the DRP pipeline\footnote{Currently,
+this means \code{makeSkyMap.py}, \code{singleFrameDriver.py},
+\code{mosaic.py}, \code{skyCorrection.py}, \code{coaddDriver.py} and
+\code{multiBandDriver.py}.}, including post-processing with the pipe\_analysis
+system (\S\ref{sec:current:drp:pipeanalysis}). Any substantive changes in
+processing outputs\footnote{For example, changes to CCDs logged as failing
+certain pipeline steps, or new errors or exceptions logged during pipeline
+operation; we do not consider changes to the contents of the science data
+products ``substantive'' for this purpose, as long as those data products are
+generated as expected.} are flagged for the attention of the DRP team. The
+results of the four most recent processing campaigns are retained for
+reference.
+
+In addition, Data Facility staff periodically, on request from the DRP team,
+reprocess the whole of the first HSC public data release (``PDR1'') on the
+Verification Cluster.
 
 \subsection{Science Quality and Reliability Engineering (SQuaRE)}
 \label{sec:current:square}
