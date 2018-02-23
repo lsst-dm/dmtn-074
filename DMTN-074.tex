@@ -198,6 +198,23 @@ of handling millions of datapoints.
 \subsubsection{Large scale scientific analysis of HSC data}
 \label{sec:current:drp:hsc}
 
+% Text adapted from input from Yusra & the DRP group.
+Approximately annual, a derivate of the LSST codebase is used to process the
+full collection of data from the HSC Strategic Survey Program.  This is
+coupled with an intensive QA effort (using several of the tools listed above,
+in addition to pipeline production scientists in Japan looking at the data) to
+verify that new desired features are working as expected and that the
+scientific performance of the pipeline has not regressed, before the results
+are released to the HSC community. These data releases form the basis of
+scientific analyses by the HSC collaboration, which in turn identify issues
+that may go unnoticed during pipeline processing.
+
+Processing the entire survey dataset in this way enables the identification of
+edge and corner cases that may otherwise go unnoticed.  Unfortunately, the
+pipeline outputs are proprietary until they are released to the world a couple
+of years later, but members of the DRP team at Princeton can access them and
+use the results to trigger development and bug-fixes using public data.
+
 \subsection{Science User Interface \& Tools (SUIT)}
 \label{sec:current:suit}
 
