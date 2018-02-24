@@ -457,6 +457,71 @@ unless that was covered by the Science Platform?). Simon, can you add a note
 here describing what's available now and what the short-term plans for it are?
 \end{draftnote}
 
+\section{Use Cases and Requests}
+\label{sec:use}
+
+\begin{draftnote}
+At least for now, I --- JDS --- will dump relatively unstructured requests,
+comments and use cases that we've collected so far. Later, we should try to
+bring structure to this chaos.
+
+May be worth drawing attention to
+\href{https://github.com/lsst-dm/dmtn-074/commit/06fa883ebeb12cf728dda14fa82e4c1f01fa5696#r27754730}{this
+comment from KTL}.
+\end{draftnote}
+
+In this section, we present a selection of use cases in an attempt to build a
+relatively comprehensive overview of the needs for QA tools, services and
+procedures within DM. We will consider four broadly separate ``regimes'' in
+which QA procedures of one sort or another are relevant:
+
+\begin{description}
+
+\item[Developer support]{Provide developers with the tools they need to work
+quicky and effectively when developing scientific algorithms and/or other core
+pieces of the system.}
+
+\item[Code quality]{Ensure that our code is buildable, executable, and
+maintainable.}
+
+\item[Metric verification]{Demonstrate that we can reliably execute code at
+scale and track its performance against predefined targets.}
+
+\item[Science validation]{Check that the results of processing are
+scientifically useful, and characterize all the data products produced.}
+
+\end{description}
+
+\subsection{Developer Support}
+
+\begin{itemize}
+
+\item{Availability of test data}
+\item{Availability of plotting frameworks}
+\item{Instrumented tasks}
+\item{...}
+
+\end{itemize}
+
+\subsection{Code quality}
+
+\begin{itemize}
+\item{Unit tests; better coverage.}
+\item{Integration tests.}
+\end{itemize}
+
+\subsection{Metric verification}
+
+\begin{itemize}
+\item{...}
+\end{itemize}
+
+\subsection{Science validation}
+
+\begin{itemize}
+\item{...}
+\end{itemize}
+
 \section{Requirements}
 \label{sec:req}
 
