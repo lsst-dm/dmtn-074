@@ -269,6 +269,28 @@ complicated and brittle; these tests are often broken for reasons unrelated to
 a developer's changes. The same test can, however, be run manually by
 individual developers before merging.
 
+Larger-scale QServ integration tests are carried out periodically at CC-IN2P3
+and the LSST Data Facility. These consist of deploying the containerized Qserv
+system across a large cluster and executing queries against large-scale test
+datasets. These tests are currently controlled by a collection of scripts, but
+work is underway to move to a Kubernetes\footnote{https://kubernetes.io}-based
+infrastructure.
+
+\subsubsection{Database performance testing}
+\label{sec:current:dax:dbperf}
+
+% Text adapted from input from Fritz.
+Performance testing for qserv is performed annual once yearly, on synthetic
+data sets that are on a glide path to the scale of LSST DR1. The test
+procedure is described in \citeds{LDM-552}; examples of the reports produced
+include \citeds{DMTR-13} and \citeds{DMTR-16}.
+
+\subsubsection{DAX services}
+
+\begin{warning}
+TBD.
+\end{warning}
+
 \subsubsection{\code{lsstDebug}}
 \label{sec:current:dax:debugopt}
 
