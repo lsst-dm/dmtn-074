@@ -130,6 +130,11 @@ formally adopted by the project.
 \subsubsection{afwDisplay}
 \label{sec:current:drp:afwDisplay}
 
+\begin{draftnote}
+Not clear that this is really a DRP deliverable, but I think they are probably
+the key users and developers.
+\end{draftnote}
+
 \subsubsection{ci\_hsc}
 \label{sec:current:drp:cihsc}
 
@@ -249,6 +254,20 @@ developed for this purpose.
 
 \subsection{Science Data Archive \& Application Services (DAX)}
 \label{sec:current:dax}
+
+\subsubsection{Database intgration testing}
+\label{sec:current:dax:dbint}
+
+% Text adapted from input from Fritz.
+Qserv has a multi-node integration test which spins up several shard servers
+and a master via containers, loads a test dataset, and issues a suite of
+queries checking against known/expected results. This is run automatically
+using the \href{https://travis-ci.org}{Travis CI} service on all changes.
+
+Unfortunately, the nature of this test and the Travis CI service renders it
+complicated and brittle; these tests are often broken for reasons unrelated to
+a developer's changes. The same test can, however, be run manually by
+individual developers before merging.
 
 \subsubsection{\code{lsstDebug}}
 \label{sec:current:dax:debugopt}
