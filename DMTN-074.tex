@@ -131,7 +131,7 @@ formally adopted by the project.
 \subsection{Data Release Production (DRP)}
 \label{sec:current:drp}
 
-\subsubsection{afwDisplay}
+\subsubsection{\code{afwDisplay}}
 \label{sec:current:drp:afwDisplay}
 
 The \code{lsst.afw.display} framework provides a Python API for displaying and
@@ -148,13 +148,13 @@ more backends is relatively straightforward. However, the goal of being
 backend-agnostic may be in conflict with taking advantage of special
 capabilities or functionalities offered by particular tools.
 
-It is worth noting that there is no afwDisplay equivalent for working with
-figures: pipeline developers instead tend to access \textit{Matplotlib}
+It is worth noting that there is no \code{afwDisplay} equivalent for working
+with figures: pipeline developers instead tend to access \textit{Matplotlib}
 directly.
 
-The afwDisplay code does not appear in the work breakdown structure; no team
-has formal responsibility for it. However, the DRP team are the primary users
-and maintainers.
+The \code{afwDisplay} code does not appear in the work breakdown structure; no
+team has formal responsibility for it. However, the DRP team are the primary
+users and maintainers.
 
 \subsubsection{ci\_hsc}
 \label{sec:current:drp:cihsc}
@@ -401,6 +401,7 @@ The CI system is widely used for a number of related purposes, including:
 \end{itemize}
 
 \subsubsection{Unit test framework}
+\label{sec:current:square:unit}
 
 All code written for DM is expected to be accompanied by appropriate unit
 tests\footnote{Refer to the
@@ -573,14 +574,51 @@ scientifically useful, and characterize all the data products produced.}
 
 \subsection{Developer Support}
 
-\begin{itemize}
+\subsubsection{Unit tests}
 
-\item{Availability of test data}
-\item{Availability of plotting frameworks}
-\item{Instrumented tasks}
-\item{...}
+Extending unit test coverage and usability protects all developers from code
+being broken by changes elsewhere in the stack.
 
-\end{itemize}
+Writing test code that covers complex systems (e.g. \code{Task}s, display
+frameworks) can be awkward: better guidance, standards or frameworks for doing
+this would reduce the workload on the developer.
+
+The Developer Guide should reflect current best practice and expectations in
+respect of testing.
+
+The overloading of unit tests to act as integration tests (as discussed in
+\S\ref{sec:current:square:unit}) may contribute to making tests slow and hard
+to work with. Stricter guidelines for making unit tests more focused, together
+with better integration testing facilities, may help to address this.
+
+\subsubsection{Test datasets}
+
+When writing code, it is essential that developers have low-friction access to
+test datasets from a variety of instruments.
+
+These datasets must be well understood, in terms of their origin and
+properties.
+
+It is convenient that such datasets should be available as raw (unprocessed)
+data, but also that intermediate and final data products from various stages
+of pipeline processing be made available. This facilitiates testing of
+algorithms which are only relevant to later parts of the pipeline or analysis
+codes (e.g. Jointcal, the Science Platform) without the need for time or
+expertise to rerun basic reduction steps.
+
+These processed data products must be kept up-to-date: they should always
+correspond to the products that would be produced by the current
+state-of-the-art pipeline.
+
+\subsubsection{Visualization, plotting and debugging frameworks}
+
+Although \code{afwDisplay} (\S\ref{sec:current:drp:afwDisplay}) goes some way
+towards addressing needs for image display, there is no equivalent for
+plotting or displaying catalogue data.
+
+The \code{lsstDebug} system for debugging \code{Task}s is poorly documented
+and badly understood, and --- worse --- expectations for how debugging
+information should be collected are unclear.
 
 \subsection{Code quality}
 
