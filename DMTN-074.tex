@@ -1,4 +1,8 @@
 \documentclass[DM,authoryear,toc,lsstdraft]{lsstdoc}
+\usepackage[nonumberlist,nogroupskip,toc,numberedsection=autolabel]{glossaries}
+\makeglossaries
+\input{glossary}
+
 \input meta.tex
 
 \title{DM QA Status \& Plans}
@@ -16,7 +20,7 @@ This document will:
 
 \begin{itemize}
 
-  \item{Describe the current status of ``QA'' tools, in the broadest sense,
+  \item{Describe the current status of ``\gls{qa}'' tools, in the broadest sense,
   currently provided by Data Management;}
 
   \item{Lay out a set of common use cases and requirements for future QA
@@ -47,9 +51,9 @@ wide gamut of applications, including, for example:
 \begin{itemize}
 
 \item{Does our code correctly compile and pass its unit tests?}
-\item{Can we demonstrate that the DM system meets ``key performance
-metrics'' (\citeds{LDM-502}) and satisfies other aspects of our requirements
-documentation (\citeds{LSE-29, LSE-30, LSE-61})?}
+\item{Can we demonstrate that the DM system meets \glspl{kpm} and satisfies
+other aspects of our requirements documentation (\citeds{LSE-29, LSE-30,
+LSE-61})?}
 \item{Do we properly understand the operation of our scientific algorithms,
 both individually and operating in concert? Can we identify when the results
 they produce are scientifically lacking?}
@@ -109,7 +113,7 @@ such, it provides:
   provide a curated test dataset;}
   \item{The facility to ingest data into Butler repositories suitable for
   processing with LSST stack tools;}
-  \item{Facilities for instrumenting and calculating metrics based upon
+  \item{Facilities for instrumenting and calculating \glspl{metric} based upon
   running pipeline code;}
   \item{Submission of calculated metrics to SQuaSH using the lsst.verify
   system (\S\S\ref{sec:current:square:squash} \&
@@ -566,6 +570,7 @@ scientifically useful, and characterize all the data products produced.}
 \section{Requirements}
 \label{sec:req}
 
+\printglossary[style=index]
 
 \bibliography{lsst,lsst-dm,refs_ads,refs,books}
 
