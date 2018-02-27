@@ -134,10 +134,27 @@ formally adopted by the project.
 \subsubsection{afwDisplay}
 \label{sec:current:drp:afwDisplay}
 
-\begin{draftnote}
-Not clear that this is really a DRP deliverable, but I think they are probably
-the key users and developers.
-\end{draftnote}
+The \code{lsst.afw.display} framework provides a Python API for displaying and
+manipulating images and overlaying information source lists based on LSST
+stack primitives. The code is backend-agnostic --- that is, the developer
+writes to a device-independent common API, and the display can appear on one
+of a number of image viewers. Back-end implementations are currently available
+for \textit{SAOImage DS9}\footnote{\url{https://github.com/lsst/display_ds9}},
+\textit{Matplotlib}\footnote{\url{https://github.com/lsst/display_matplotlib}},
+\textit{Firefly}\footnote{\url{https://github.com/lsst/display_firefly}}
+(\S\ref{sec:current:suit:firefly}) and
+\textit{Ginga}\footnote{\url{https://github.com/lsst/display_ginga}}. Adding
+more backends is relatively straightforward. However, the goal of being
+backend-agnostic may be in conflict with taking advantage of special
+capabilities or functionalities offered by particular tools.
+
+It is worth noting that there is no afwDisplay equivalent for working with
+figures: pipeline developers instead tend to access \textit{Matplotlib}
+directly.
+
+The afwDisplay code does not appear in the work breakdown structure; no team
+has formal responsibility for it. However, the DRP team are the primary users
+and maintainers.
 
 \subsubsection{ci\_hsc}
 \label{sec:current:drp:cihsc}
