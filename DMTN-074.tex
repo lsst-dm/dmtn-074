@@ -306,11 +306,28 @@ data sets that are on a glide path to the scale of LSST DR1. The test
 procedure is described in \citeds{LDM-552}; examples of the reports produced
 include \citeds{DMTR-13} and \citeds{DMTR-16}.
 
+Performance constraints are particualrly an issue for the Level 1 (Prompt)
+database prototype. A simulator was developed to test its performance at
+various scales. This simualtor is described in \jira{DM-6365}. It is not
+regularly run as part of \gls{ci}.
+
 \subsubsection{DAX services}
 
-\begin{warning}
-TBD.
-\end{warning}
+% Text adapted from input from Fritz.
+The current development version of the imgserv service is shipped with an
+integrated test suite of several dozen queries, which can be quickly executed
+against the service via a built-in CLI, running against either a small test
+dataset (included with the code) or the larger data sets currently deployed in
+the \gls{pdac}. This same test suite can also be executed directly over
+HTTP\footnote{Using a client such as \textit{cURL};
+\url{https://curl.haxx.se/}.} to validate the top-end web service layers.
+
+The test suite is not yet integrated with the \gls{ci}
+(\S\ref{sec:current:square:ci}) system, but in principle there is no reason
+why it could not be.
+
+This testing strategy has been found very successful for imgserv, and
+it will be extended to other DAX services as development continues.
 
 \subsubsection{\code{lsstDebug}}
 \label{sec:current:dax:debugopt}
