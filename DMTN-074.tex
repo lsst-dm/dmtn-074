@@ -574,23 +574,6 @@ scientifically useful, and characterize all the data products produced.}
 
 \subsection{Developer Support}
 
-\subsubsection{Unit tests}
-
-Extending unit test coverage and usability protects all developers from code
-being broken by changes elsewhere in the stack.
-
-Writing test code that covers complex systems (e.g. \code{Task}s, display
-frameworks) can be awkward: better guidance, standards or frameworks for doing
-this would reduce the workload on the developer.
-
-The Developer Guide should reflect current best practice and expectations in
-respect of testing.
-
-The overloading of unit tests to act as integration tests (as discussed in
-\S\ref{sec:current:square:unit}) may contribute to making tests slow and hard
-to work with. Stricter guidelines for making unit tests more focused, together
-with better integration testing facilities, may help to address this.
-
 \subsubsection{Test datasets}
 
 When writing code, it is essential that developers have low-friction access to
@@ -620,24 +603,180 @@ The \code{lsstDebug} system for debugging \code{Task}s is poorly documented
 and badly understood, and --- worse --- expectations for how debugging
 information should be collected are unclear.
 
+\subsubsection{Support for running and debugging at scale}
+
+Developers request more support with running at scale on e.g. the Verification
+Cluster, and, crucially, understanding the results of those runs. Current
+debugging techniques consist of little in the way of status information, reams
+of unstructured logs, and extensive use of \code{grep}.
+
+\subsubsection{Notifications and dashboards}
+\label{sec:requests:notifications}
+
+Many of the systems being described or requested rely on some analysis of the
+performance of code being proposed by some particular developer against
+standards for code quality, algorithmic correctness, performance, etc.
+Wherever possible, the results of these checks should be presented to
+developers automatically (e.g. by Slack and/or e-mail notification), and
+delivered in a clear and consistent way (rather than requiring developers to
+navigate and integrate information from multitudinous chatbots, websites,
+and so on).
+
 \subsection{Code quality}
 
+\subsubsection{Unit tests}
+
+Extending unit test coverage and usability protects all developers from code
+being broken by changes elsewhere in the stack.
+
+Writing test code that covers complex systems (e.g. \code{Task}s, display
+frameworks) can be awkward: better guidance, standards or frameworks for doing
+this would reduce the workload on the developer.
+
+The Developer Guide should reflect current best practice and expectations in
+respect of testing.
+
+The overloading of unit tests to act as integration tests (as discussed in
+\S\ref{sec:current:square:unit}) may contribute to making tests slow and hard
+to work with. Stricter guidelines for making unit tests more focused, together
+with better integration testing facilities, may help to address this.
+
+\subsubsection{Integration tests}
+
+Integration tests for major DM components should be run regularly. These would
+likely include (at a minimum) separate, ``end-to-end'' tests for each of the
+alert production and data release production systems, together with other
+major components of the system (e.g. alert distribution, databases). Coverage
+should be tracked, so that we understand which aspects of the system are being
+tested and which are not\footnote{This will include e.g. which \code{Task}s
+are not executed by any integration tests because they are disabled by
+pipeline configuration.}.
+
+Integration tests are not responsible for scientific validation of data
+products. However, they should track all other aspects of execution. This will
+likely include:
+
 \begin{itemize}
-\item{Unit tests; better coverage.}
-\item{Integration tests.}
+
+  \item{Successful execution (the code does not abort or fail);}
+  \item{Generation of all expected data products;}
+  \item{Significant changes in log messages (e.g. new warnings or errors being
+  logged);}
+  \item{Changes in data processed, rejected, etc (e.g. some CCDs that
+  previously passed now fail);}
+  \item{Calculation of metrics describing the results.}
+
 \end{itemize}
+
+Note that integration tests may be executed in (at least) two situations:
+
+\begin{itemize}
+
+  \item{Individual developers wish to check their code before a merge;}
+  \item{The current \code{master} branch, and any maintained release branches,
+  should be regularly exercised to ensure that no regressions have been
+  merged.}
+
+\end{itemize}
+
+Note that integration tests which developers are expected to run before
+merging to \code{master} must be (relatively) fast to avoid increasing
+developer friction.
+
+Checks for regression on \code{master} should be treated with the appropriate
+gravity: they should result in notifications
+(\S\ref{sec:requests:notifications}) to responsible individuals, and
+ultimately be escaled to e.g. the DM Project Manager if they are not
+addressed.
+
+\subsubsection{Static analysis, code linters, etc}
+
+A variety of other tools may be applied to identify potential issues or coding
+standards violations. While these may often be effective in improving quality,
+care must be taken to ensure both that they don't introduce excessive churn
+(making e.g. \gls{vcs} history hard to follow) and that the benefits gained
+are worth the implementation costs.
 
 \subsection{Metric verification}
 
+\subsubsection{Performance analysis}
+
+Execution time, under controlled conditions\footnote{We might consider whether
+AWS instances, or other shared hardware, qualify.}, should be tracked for all
+time-sensitive areas of the codebase.
+
+This will obviously include high-level summaries of the time taken to execute
+major pipeline components or database queries (which must be tracked in order
+to satisfy high-level requirements). However, it must also make it easy to
+track the impact of changes to individual algorithms or other components, and
+to provide feedback to developers if their changes introduce performance
+regressions.
+
+\subsubsection{High-level metric tracking}
+\label{sec:requests:kpmtrack}
+
+\Glspl{kpm} derived directly from high-level requirements documents
+(\citeds{LPM-17, LSE-29, LSE-30}, etc) are not directly applicable to the DM
+codebase, since they characterize the performance of the LSST system
+\textit{as a whole}. However, the Subsystem (presumably under the guidance of
+the \gls{sst}) should define, and \textit{rigorously} track our performance
+against, equivalent quantities that can be well-defined in the context of DM
+(for example, measurements made on simulated or precursor datasets).
+
+Actively tracking performance is key. This could take the form of
+notifications (\S\ref{sec:requests:notifications}) to key individuals (e.g.
+the DM Project Manager, DM Subsystem Scientist, DM Pipelines Scientist, T/CAMs
+of relevant groups) on any regression, or a weekly meeting of key personnel to
+review collected measurements.
+
+Ultimately, successful verification and delivery of the DM Subsystem is
+predicated on hitting predefined targets in all of these metrics, and the DM
+System Requirements (\citeds{LSE-61}) should be updated to reflect this.
+
+\subsubsection{Ad-hoc metric calculation and tracking}
+\label{sec:requests:adhoctrack}
+
+While some metrics, as described in \S\ref{sec:requests:kpmtrack}, should be
+regularly tracked under controlled conditions on specific datasets, there is
+also a need for other metrics to be calculated and --- potentially ---
+tracked.
+
+There are a number of considerations here:
+
 \begin{itemize}
-\item{...}
+
+  \item{Developers will wish to execute code against arbitrary datasets and
+  obtain a high-level summary of its performance. Such metrics might be
+  tracked in the short term for developer convenience, but varying compute
+  platforms, datasets and algorithmic implementations will render them of
+  little value for long-term monitoring.}
+
+  \item{Some ad-hoc metrics should be tracked indefinitely. However, they will
+  then require that the platforms and datasets upon which they are being
+  tracked are held constant to ensure that the values being recorded are
+  comparable with earlier measurements.}
+
+  \item{Interfaces for defining metrics should be made available to
+  developers.}
+
+  \item{The types of metric being collected should be considered. From use
+  cases collected to date, it's not immediately obvious whether the
+  combination of scalar summary values plus the ability to “drill down” to
+  processed data products, is adequate, or if more complex datatypes are
+  required\footnote{Perhaps equivalent: should the metric-tracking system
+  store pipe\_analysis (\S\ref{sec:current:drp:pipeanalysis}-style plots, or
+  other intermediate data products, from which summary metric values might be
+  derived, in addition to the metric measurements themselves, or should it be
+  possible to generate these plots on the fly from the output dataset? If the
+  latter, must the output dataset be preserved indefinitely?}.}
+
 \end{itemize}
 
 \subsection{Science validation}
 
-\begin{itemize}
-\item{...}
-\end{itemize}
+\subsubsection{Drill-down}
+\label{sec:requests:drill}
+
 
 \section{Requirements}
 \label{sec:req}
