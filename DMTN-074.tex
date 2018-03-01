@@ -383,21 +383,21 @@ Verification Cluster.
 \subsubsection{Continuous Integration services (Jenkins)}
 \label{sec:current:square:ci}
 
-SQuaRE provides and maintains the CI system which regularly builds and
-tests much of the DM codebase\footnote{Principally, CI covers products of
-the Science Pipelines and Database teams; I believe that little-to-none of the
-UI code developed by SUIT, of the service management code developed by LDF, or
-of the code used to provide services by SQuaRE, is regularly tested in this CI
-system.}.
+SQuaRE provides and maintains the \href{https://ci.lsst.codes}{CI system} which regularly builds and
+tests much of the DM science pipelines and QSERV codebase.  The systems engineering simulations
+team also take advantage of the same system.
 
 The CI system is widely used for a number of related purposes, including:
 
 \begin{itemize}
 
-  \item{Testing of code by developers before it is merged;}
+  \item{Testing of code by developers before it is merged.  Primarily this runs all unit tests in all
+  packages, but can also run more comprehensive integration tests.;}
   \item{Executing metric collection systems (e.g. validate\_drp,
   \S\ref{sec:current:square:validate});}
-  \item{Building and preparing code for public release.}
+  \item{Building and preparing code for public and internal release. This includes
+  packaging both source and binary releases and building docker images for use in the
+  JupyterLab environment \S\ref{sec:current:square:jl}.}
 
 \end{itemize}
 
@@ -418,7 +418,10 @@ classes for loading data, performing instrument signature removal, source
 detection and measurement, calibration, and so on. As a natural result of
 this, DM's unit tests are often (ab)used to provide mini-integration tests.
 This can cause fragility in the test suite, but also provides convenient
-test capabilities which are not easily available elsewhere.
+test capabilities which are not easily available elsewhere. Another side
+effect of this conflation of integration and unit testint is that there
+is no way to test modules in a completely stand alone way. Any package
+need all its dependencies in order to execute the tests.
 
 Although the creation of unit tests is not a responsibility of SQuaRE, the
 technology used to implement them, and their regular execution as part of the
@@ -429,7 +432,7 @@ developed in close cooperation with the Architecture team).
 \label{sec:current:square:demo}
 
 The Stack Demo, \code{lsst/lsst\_dm\_stack\_demo}, contains a curated
-selection of SDSS data, a script which executed single frame measurement on
+selection of SDSS data, a script which executes single frame measurement on
 that data, and a set of precomputed expected outputs. The results of
 measurement are compared with the expected values, and an error is thrown if
 any values (including number of detected sources, their positions, and
@@ -456,7 +459,10 @@ that measure software and data quality ``metrics''. A metric can be any
 measurable scalar quantity; some examples are in the LSST Science Requirements
 Document (\citeds{LPM-17}), though packages can also define ad hoc metrics.
 Measurements made through lsst.verify can be uploaded to LSST's SQuaSH
-monitoring dashboard (\S\ref{sec:current:square:squash}).
+monitoring dashboard (\S\ref{sec:current:square:squash}).  Note that \code{lsst.verify}
+is intended to be the main mechanism by which our pipelines are verified.
+The process of validating the pipelines in a scientific context are left
+to the DM validation team.
 
 \subsubsection{SQuaSH}
 \label{sec:current:square:squash}
@@ -464,26 +470,37 @@ monitoring dashboard (\S\ref{sec:current:square:squash}).
 \href{https://squash.lsst.codes}{SQuaSH} is a metric aggregation and display
 service. It provides time-series visualization of selected metrics derived
 from \citeds{LDM-502}. Metics may be submitted to SQuaSH using lsst.verify
-(\S\ref{sec:current:square:verify}).
+(\S\ref{sec:current:square:verify}). These metrics are stored and tracked,
+this allows for regression alerts to be issued via several mechanisms including
+slack notifications.  All metrics measurements are accompanied by the
+associated code changes to aid in identification of relevant packages in the
+event of a regression.
 
-\begin{draftnote}
-I --- JDS --- am actually unsure of the bigger picture of SQuaSH beyond that.
-I know there have been plans for end users to extend it to plot arbitrary
-metrics, but I don't know if they've been implemented, and I know work has
-been done on more advanced visualizations, but I don't know how much of that
-has rolled out or where it's heading next. Simon, perhaps you can expand?
-\end{draftnote}
+To date, the primary us
+of SQuaSH has been to follow a selection of KPMs, however the framework is not
+restricted to only KPMs. Any metric defined in \code{lsst.verify.metrics} can
+be uploaded to SQuaSH. SQuaSH serves as both a database and search engine for
+metric measurements as well as a visualization platform for those measurements.
+
+For a selection of the measuremnts corresponding to select KPMs, specialized
+visualiztions have been developed, but it is also possible to query the metric
+database using GraphQL for other measurements to feed to ad hoc visualizations.
+We expect that SQuaSH will be a tool for developers to track low level metrics
+on their particular project as well as higher level DM-subsystem and project level
+metrics.
 
 SQuaSH is described in \citeds{SQR-009}.
 
 \subsubsection{Validation packages}
 \label{sec:current:square:validate}
 
-\begin{draftnote}
-I --- JDS --- am unsure as to whether these packages are actually a product of
-SQuaRE or of DM Science or of System Level Testing \& Science Validation
-(02C.09). Simon, do you know?
-\end{draftnote}
+Though the packages are currently referred to as "validate" packages, they
+are intended more for use in the verification process and will likely be renamed.
+They were put together by the interim SQuaRE Scientist to provide inputs for
+calculating specific KPMs necessary for verifying the behaviour of the
+science pipelines system.  The focus, to date, has been on DRP, but we expect
+to incorporate other high level systems, like AP, as well as some lower level
+systems like jointcal.
 
 The validate\_drp package will automatically run single-frame processing on a
 dataset, calculate a subset of metrics derived from the Science Requirements
@@ -514,6 +531,10 @@ Currently, validate\_drp supports the following metrics\footnote{From
 }
 \end{itemize}
 
+Though the master branch of validate\_drp currently uses an older system for
+calculating and transmitting metric measurements, there is currently a complete
+port to the \code{lsst.verify} system on the \code{verify\_port} branch.
+
 In addition, three curated datasets for use with validate\_drp are provided.
 These are based on CFHT (validation\_data\_cfht), DECam
 (validation\_data\_decam) and HSC (validation\_data\_hsc). These datasets are
@@ -524,19 +545,30 @@ Note that the validation\_data packages contain both ``raw'' data and
 processed data which has been ingested to a Butler repository. There is no
 regular routine for updating that processed data in light of changes to the
 software; developers have occasionally found it unclear or confusing whether
-this data is actually supposed to be usable or useful.
+this data is actually supposed to be usable or useful. There is currently an
+adopted RFC (RFC-243) that requests regular updating of project datasets that
+may help with this situation.
 
 \subsubsection{Hosted Jupyter notebooks}
 \label{sec:current:square:jl}
 
-\begin{draftnote}
-I --- JDS --- know they exist at some level, but I'm not sure of any details.
-As I understand it, to date their development has entirely(??) been driven by
-a desire to support commissioning, rather than for internal use by DM (at
-least, I'm not aware of any requirements gathering from other DM teams...
-unless that was covered by the Science Platform?). Simon, can you add a note
-here describing what's available now and what the short-term plans for it are?
-\end{draftnote}
+The JupyterLab environment is a complete, containerized system for spinning up
+Jupyter Notebooks in a hosted environment. The environment comes complete with
+pre-compiled recent versions of the stack.  Currently this is configured to be
+the three most recent weekly releases, the two most recent daily releases, and
+the most recent major release. The JupyterLab environment has persistent storage
+so that the personal environment may be customized.  It also provides commonly
+expected utilites like a shell prompt as well as a text editor.
+
+Currently there are three deployments, though all three are meant for a small
+focused group. One deployment is for DM development of the system itself. A second
+is for use by the systems engineering team to begin commissioning exercises. The
+third is for use in development by the EPO team. As well as the personal persistent
+storage, there is also persistent shared storage for sharing date, etc.
+
+Since these are currently hosted in the cloud they are relatively small, however
+they are all trivially re-deployable to a project hosted cluster resource running
+Kubernetes when such a resource is available.
 
 \section{Use Cases and Requests}
 \label{sec:use}
