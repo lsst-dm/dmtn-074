@@ -823,6 +823,25 @@ There are a number of considerations here:
 \subsubsection{Drill-down}
 \label{sec:requests:drill}
 
+It should be possible to display catalog data or summary metrics of interest
+as a function of positio on the sky for (at least) tracts worth of data (and
+preferably all sky). When patterns or pathologies are observed, it should be
+possible for the user to interactively ``drill down'' to investigate their
+source. For example, this includes plotting multiple (user selected)
+quantities of interest, enabling brushing \& linking between them, and the
+ability to round-trip data to a Jupyter notebook for further analysis. The
+tooling should enable the user to investigate questions such as:
+
+\begin{itemize}
+
+\item{Why are the colors in this region of the sky systematically offset from
+the stellar locus?}
+
+\item{Why is the difference between CModel Mags and Psf Mags multimodal?}
+
+\item{...}
+
+\end{itemize}
 
 \section{Requirements}
 \label{sec:req}
