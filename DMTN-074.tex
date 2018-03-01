@@ -70,10 +70,10 @@ software or services?}
 
 \end{itemize}
 
-To date, the DM team has build a number of tools which address parts of these
+To date, the DM team has built a number of tools which address parts of these
 problems. However, a coherent, unified vision for how they fit together
 remains lacking. This document will\footnote{Ultimately; the current draft
-does yet address all aspects of this scope!} catalogue the tools that are currently
+does not yet address all aspects of this scope!} catalogue the tools that are currently
 available, will identify use-cases and the requirements arising from them,
 will determine to what extent the existing tools satisfy those requirements,
 and will suggest directions for future development.
@@ -154,7 +154,7 @@ directly.
 
 The \code{afwDisplay} code does not appear in the work breakdown structure; no
 team has formal responsibility for it. However, the DRP team are the primary
-users and maintainers.
+maintainers. The teams within science pipelines all make use of \code{afwDisplay}.
 
 \subsubsection{ci\_hsc}
 \label{sec:current:drp:cihsc}
@@ -184,7 +184,7 @@ three hours --- and is periodically run by the CI system
 The pipe\_analysis package provides scripts which inspect a repository of
 processed data and generate static plots of the distributions of
 scientifically relevant quantities. These may be manually inspected to
-demonstrate the internal internal consistency and fidelity of photometric and
+demonstrate the internal consistency and fidelity of photometric and
 astrometric measurements on the visit-stage and coadd-stage catalog outputs.
 They also can be used to compare catalog outputs from two different reruns
 
@@ -228,7 +228,7 @@ of handling millions of datapoints.
 \label{sec:current:drp:hsc}
 
 % Text adapted from input from Yusra & the DRP group.
-Approximately annual, a derivate of the LSST codebase is used to process the
+Approximately annually, a derivate of the LSST codebase is used to process the
 full collection of data from the HSC Strategic Survey Program.  This is
 coupled with an intensive QA effort (using several of the tools listed above,
 in addition to pipeline production scientists in Japan looking at the data) to
@@ -260,7 +260,8 @@ colocated with the data, and is accessed through a Javascript based UI in the
 user's browser. At various times, installations of Firefly have been made
 available to DM developers on project-provided compute hardware\footnote{i.e.
 \texttt{lsst-dev01.ncsa.illionois.edu}}, but these are not regularly
-maintained or accessed by pipelines developers.
+maintained or accessed by pipelines developers. A firefly server is deployed
+with every instance of the JupyterLab environment (\S\ref{sec:durrent:square:jl}).
 
 Firefly interfaces to the standard image display system used by the LSST
 pipelines (\S\ref{sec:current:drp:afwDisplay}) are available.
@@ -301,7 +302,7 @@ infrastructure.
 \label{sec:current:dax:dbperf}
 
 % Text adapted from input from Fritz.
-Performance testing for qserv is performed annual once yearly, on synthetic
+Performance testing for qserv is performed annually, on synthetic
 data sets that are on a glide path to the scale of LSST DR1. The test
 procedure is described in \citeds{LDM-552}; examples of the reports produced
 include \citeds{DMTR-13} and \citeds{DMTR-16}.
@@ -337,7 +338,7 @@ The author of an algorithmic task knows which intermediate data products and
 diagnostic plots are useful for answering questions about its behavior. The
 \code{lsstDebug} framework allows developers to insert code into their
 \code{Task}s that displays images (using standard DM primitives) and makes
-plots that is only run when the \code{CmdLineTask} is invoked with the
+plots that are only run when the \code{CmdLineTask} is invoked with the
 \code{--debug} parameter.
 
 Historically, the \code{lsstDebug} system has been poorly documented and the
@@ -526,7 +527,7 @@ software; developers have occasionally found it unclear or confusing whether
 this data is actually supposed to be usable or useful.
 
 \subsubsection{Hosted Jupyter notebooks}
-\label{sec:current:square:jupyter}
+\label{sec:current:square:jl}
 
 \begin{draftnote}
 I --- JDS --- know they exist at some level, but I'm not sure of any details.
