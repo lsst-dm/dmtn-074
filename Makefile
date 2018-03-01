@@ -17,6 +17,7 @@ $(DOCNAME).pdf: $(DOCNAME).tex meta.tex
 	bibtex $(DOCNAME)
 	xelatex $(DOCNAME)
 	makeglossaries $(DOCNAME)
+	bibtex $(DOCNAME)
 	xelatex $(DOCNAME)
 	xelatex $(DOCNAME)
 

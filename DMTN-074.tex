@@ -8,7 +8,7 @@
 \title{DM QA Status \& Plans}
 
 \author{%
-Simon Krughoff,
+Simon Krughoff and
 John Swinbank
 }
 
@@ -34,7 +34,7 @@ This document will:
 % Fields: VERSION, DATE, DESCRIPTION, OWNER NAME.
 % See LPM-51 for version number policy.
 \setDocChangeRecord{%
-  \addtohist{1}{YYY-MM-DD}{Unreleased.}{Simon Krughoff}
+  \addtohist{\vcsRevision}{\vcsDate}{Unreleased draft.}{Krughoff \& Swinbank}
 }
 
 \begin{document}
@@ -115,7 +115,7 @@ such, it provides:
   processing with LSST stack tools;}
   \item{Facilities for instrumenting and calculating \glspl{metric} based upon
   running pipeline code;}
-  \item{Submission of calculated metrics to SQuaSH using the lsst.verify
+  \item{Submission of calculated \glspl{metric} to SQuaSH using the lsst.verify
   system (\S\S\ref{sec:current:square:squash} \&
   \ref{sec:current:square:verify}).}
 
@@ -123,7 +123,7 @@ such, it provides:
 
 Based largely upon the experience gained in building ap\_verify, the AP team
 has put considerable thought into the appropriate mechanisms for extracting
-``metrics'' from running pipeline \code{Task}s. This has resulted in
+\glspl{metric} from running pipeline \code{Task}s. This has resulted in
 \citeds{DMTN-057}, which describes a number of possibilites for how this might
 be standardized. At time of writing, none of these proposals have been
 formally adopted by the project.
@@ -393,7 +393,7 @@ The CI system is widely used for a number of related purposes, including:
 
   \item{Testing of code by developers before it is merged.  Primarily this runs all unit tests in all
   packages, but can also run more comprehensive integration tests.;}
-  \item{Executing metric collection systems (e.g. validate\_drp,
+  \item{Executing \gls{metric} collection systems (e.g. validate\_drp,
   \S\ref{sec:current:square:validate});}
   \item{Building and preparing code for public and internal release. This includes
   packaging both source and binary releases and building docker images for use in the
@@ -455,7 +455,7 @@ automatically run as part of most CI (\S\ref{sec:current:square:ci}) jobs.
 % https://pipelines.lsst.io/v/DM-11597/modules/lsst.verify/index.html
 
 \href{https://github.com/lsst/verify}{lsst.verify} is a framework for packages
-that measure software and data quality ``metrics''. A metric can be any
+that measure software and data quality \glspl{metric}. A metric can be any
 measurable scalar quantity; some examples are in the LSST Science Requirements
 Document (\citeds{LPM-17}), though packages can also define ad hoc metrics.
 Measurements made through lsst.verify can be uploaded to LSST's SQuaSH
@@ -467,20 +467,20 @@ to the DM validation team.
 \subsubsection{SQuaSH}
 \label{sec:current:square:squash}
 
-\href{https://squash.lsst.codes}{SQuaSH} is a metric aggregation and display
-service. It provides time-series visualization of selected metrics derived
-from \citeds{LDM-502}. Metics may be submitted to SQuaSH using lsst.verify
-(\S\ref{sec:current:square:verify}). These metrics are stored and tracked,
-this allows for regression alerts to be issued via several mechanisms including
-slack notifications.  All metrics measurements are accompanied by the
-associated code changes to aid in identification of relevant packages in the
-event of a regression.
+\href{https://squash.lsst.codes}{SQuaSH} is a \gls{metric} aggregation and
+display service. It provides time-series visualization of selected metrics
+derived from \citeds{LDM-502}. Metics may be submitted to SQuaSH using
+lsst.verify (\S\ref{sec:current:square:verify}). These metrics are stored and
+tracked, this allows for regression alerts to be issued via several mechanisms
+including slack notifications.  All metrics measurements are accompanied by
+the associated code changes to aid in identification of relevant packages in
+the event of a regression.
 
-To date, the primary us
-of SQuaSH has been to follow a selection of KPMs, however the framework is not
-restricted to only KPMs. Any metric defined in \code{lsst.verify.metrics} can
-be uploaded to SQuaSH. SQuaSH serves as both a database and search engine for
-metric measurements as well as a visualization platform for those measurements.
+To date, the primary us of SQuaSH has been to follow a selection of KPMs,
+however the framework is not restricted to only KPMs. Any metric defined in
+\code{lsst.verify.metrics} can be uploaded to SQuaSH. SQuaSH serves as both a
+database and search engine for metric measurements as well as a visualization
+platform for those measurements.
 
 For a selection of the measuremnts corresponding to select KPMs, specialized
 visualiztions have been developed, but it is also possible to query the metric
@@ -503,12 +503,12 @@ to incorporate other high level systems, like AP, as well as some lower level
 systems like jointcal.
 
 The validate\_drp package will automatically run single-frame processing on a
-dataset, calculate a subset of metrics derived from the Science Requirements
-Document (\citeds{LPM-17}), upload the results to SQuaSH
+dataset, calculate a subset of \glspl{metric} derived from the Science
+Requirements Document (\citeds{LPM-17}), upload the results to SQuaSH
 (\S\ref{sec:current:square:squash}, and evaluate expected analytic models for
 photometric and astrometric performance following \cite{2008arXiv0805.2366I}.
 
-Currently, validate\_drp supports the following metrics\footnote{From
+Currently, validate\_drp supports the following \glspl{metric}\footnote{From
 \code{etc/metrics.yaml} of validate\_drp \code{w.2018.07}}:
 
 \begin{itemize}
@@ -532,7 +532,7 @@ Currently, validate\_drp supports the following metrics\footnote{From
 \end{itemize}
 
 Though the master branch of validate\_drp currently uses an older system for
-calculating and transmitting metric measurements, there is currently a complete
+calculating and transmitting \gls{metric} measurements, there is currently a complete
 port to the \code{lsst.verify} system on the \code{verify\_port} branch.
 
 In addition, three curated datasets for use with validate\_drp are provided.
@@ -697,7 +697,7 @@ likely include:
   logged);}
   \item{Changes in data processed, rejected, etc (e.g. some CCDs that
   previously passed now fail);}
-  \item{Calculation of metrics describing the results.}
+  \item{Calculation of \glspl{metric} describing the results.}
 
 \end{itemize}
 
@@ -763,16 +763,17 @@ of relevant groups) on any regression, or a weekly meeting of key personnel to
 review collected measurements.
 
 Ultimately, successful verification and delivery of the DM Subsystem is
-predicated on hitting predefined targets in all of these metrics, and the DM
-System Requirements (\citeds{LSE-61}) should be updated to reflect this.
+predicated on hitting predefined targets in all of these \glspl{metric}, and
+the DM System Requirements (\citeds{LSE-61}) should be updated to reflect
+this.
 
 \subsubsection{Ad-hoc metric calculation and tracking}
 \label{sec:requests:adhoctrack}
 
-While some metrics, as described in \S\ref{sec:requests:kpmtrack}, should be
-regularly tracked under controlled conditions on specific datasets, there is
-also a need for other metrics to be calculated and --- potentially ---
-tracked.
+While some \glspl{metric}, as described in \S\ref{sec:requests:kpmtrack},
+should be regularly tracked under controlled conditions on specific datasets,
+there is also a need for other metrics to be calculated and --- potentially
+--- tracked.
 
 There are a number of considerations here:
 
