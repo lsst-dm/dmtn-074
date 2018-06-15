@@ -23,10 +23,15 @@ This document will:
   \item{Describe the current status of ``\gls{qa}'' tools, in the broadest sense,
   currently provided by Data Management;}
 
-  \item{Lay out a set of common use cases and requirements for future QA
+  \item{Sketch out a set of common use cases and requirements for future QA
   tool and service development across the subsystem.}
 
 \end{itemize}
+
+It is intended to serve as input to planning for \gls{qa} currently being
+undertaken by the DM Leadership Team, the DM System Science Team, and the DM
+QA Strategy Working Group (\citeds{LDM-622}).
+
 }
 
 % Change history defined here.
@@ -34,7 +39,7 @@ This document will:
 % Fields: VERSION, DATE, DESCRIPTION, OWNER NAME.
 % See LPM-51 for version number policy.
 \setDocChangeRecord{%
-  \addtohist{\vcsRevision}{\vcsDate}{Unreleased draft.}{Krughoff \& Swinbank}
+  \addtohist{1.0 (\vcsRevision)}{\vcsDate}{First release.}{Krughoff \& Swinbank}
 }
 
 \begin{document}
@@ -585,15 +590,6 @@ available.
 \section{Requested Functionality}
 \label{sec:use}
 
-\begin{note}
-This section currently consists of relatively unstructured requests; we make
-no claims of completeness as yet.
-
-May be worth drawing attention to
-\href{https://github.com/lsst-dm/dmtn-074/commit/06fa883ebeb12cf728dda14fa82e4c1f01fa5696#r27754730}{this
-comment from KTL}.
-\end{note}
-
 In this section, we briefly enumerate functionality that has been requested
 from across the project under the banner of ``QA''.  We will consider four
 broadly separate ``regimes'' in which QA procedures of one sort or another are
@@ -615,6 +611,10 @@ scale and track its performance against predefined targets.}
 scientifically useful, and characterize all the data products produced.}
 
 \end{description}
+
+This brief sketch is not intended to be comprehensive: for a detailed
+consideration of DM's sdesires, requirements and future plans for QA, refer to
+forthcoming report from the QA Working Group (\citeds{DMTN-085}).
 
 \subsection{Developer Support}
 
